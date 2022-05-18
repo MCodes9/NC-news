@@ -116,9 +116,10 @@ describe("PATCH /api/articles/:article_id", () => {
       });
   });
   test("400: Responds a bad request error message when request body is empty", () => {
+    const requestBody = {};
     return request(app)
       .patch("/api/articles/invalid_id")
-      .send()
+      .send(requestBody)
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Bad request");
