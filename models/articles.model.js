@@ -12,8 +12,6 @@ exports.fetchArticleById = (article_id) => {
 };
 
 exports.updateArticleById = (article_id, increase_votes) => {
-  // const { increase_votes } = body;
-  console.log("In the model");
   let queryStr =
     " UPDATE articles SET votes= votes + $1 WHERE article_id = $2 RETURNING *;";
 

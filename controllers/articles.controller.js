@@ -13,9 +13,7 @@ exports.getArticleById = (req, res, next) => {
 };
 
 exports.patchArticleById = (req, res, next) => {
-  // console.log("in the controller");
   const { article_id } = req.params;
-  console.log(req.body);
   const { inc_votes } = req.body;
   updateArticleById(article_id, inc_votes)
     .then((article) => {
