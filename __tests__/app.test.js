@@ -35,12 +35,12 @@ describe("GET /api/articles/:article_id", () => {
         expect(article).toEqual(
           expect.objectContaining({
             article_id: 1,
-            author: expect.any(String),
-            title: expect.any(String),
-            topic: expect.any(String),
-            body: expect.any(String),
+            title: "Living in the shadow of a great man",
+            topic: "mitch",
+            author: "butter_bridge",
+            body: "I find this existence challenging",
             created_at: expect.any(String),
-            votes: expect.any(Number),
+            votes: 100,
           })
         );
       });
