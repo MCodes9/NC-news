@@ -18,7 +18,7 @@ exports.updateArticleById = (article_id, increase_votes) => {
   if (!increase_votes) {
     return Promise.reject({
       status: 400,
-      msg: "No change in votes",
+      msg: "Bad request",
     });
   }
   return db.query(queryStr, [increase_votes, article_id]).then((article) => {

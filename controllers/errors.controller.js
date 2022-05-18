@@ -11,7 +11,6 @@ exports.handlePSQLErrors = (err, req, res, next) => {
 };
 
 exports.handleCustomErrors = (err, req, res, next) => {
-  console.log(err, "Line 14 custom error");
   if (err) {
     res.status(err.status).send({ msg: err.msg });
   } else {

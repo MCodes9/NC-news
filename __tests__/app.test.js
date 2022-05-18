@@ -96,16 +96,39 @@ describe("PATCH /api/articles/:article_id", () => {
       });
   });
   test("400: Responds a bad request error message when passed an invalid endpoint id", () => {
+    const requestBody = { inc_votes: 50 };
     return request(app)
-      .get("/api/articles/invalid_id")
+      .patch("/api/articles/invalid_id")
+      .send(requestBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+  test("400: Responds a bad request error message when votes are not an integer", () => {
+    const requestBody = { inc_votes: "Minus 10" };
+    return request(app)
+      .patch("/api/articles/1")
+      .send(requestBody)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad request");
+      });
+  });
+  test("400: Responds a bad request error message when request body is empty", () => {
+    return request(app)
+      .patch("/api/articles/invalid_id")
+      .send()
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Bad request");
       });
   });
   test("404: Responds a 'Not Found' message when the article id does not exist on database", () => {
+    const requestBody = { inc_votes: 50 };
     return request(app)
-      .get("/api/articles/999999999")
+      .patch("/api/articles/999999999")
+      .send(requestBody)
       .expect(404)
       .then(({ body }) => {
         expect(body).toEqual({ msg: "Article not found" });
