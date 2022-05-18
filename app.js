@@ -7,6 +7,7 @@ const {
 } = require("../NC-news/controllers/articles.controller");
 
 const {
+  handlePathErrors,
   handleInternalServerError,
   handleCustomErrors,
   handlePSQLErrors,
@@ -16,9 +17,7 @@ app.get("/api/topics", getTopics);
 app.get("/api/articles/:article_id", getArticleById);
 
 // ERROR HANDLING:
-app.use("/*", (req, res) => {
-  res.status(404).send({ msg: "Path not found" });
-});
+app.all("/*", handlePathErrors);
 app.use(handlePSQLErrors);
 app.use(handleCustomErrors);
 app.use(handleInternalServerError);
