@@ -62,3 +62,35 @@ describe("GET /api/articles/:article_id", () => {
       });
   });
 });
+describe("PATCH /api/articles/:article_id", () => {
+  test("200: responds with the increased vote count", () => {
+    const requestBody = { inc_votes: 50 };
+    return request(app)
+      .patch("/api/articles/1")
+      .send(requestBody)
+      .expect(200)
+      .then(({ body: { article } }) => {
+        expect(article).toEqual(
+          expect.objectContaining({
+            article_id: 1,
+            title: "Living in the shadow of a great man",
+            topic: "mitch",
+            author: "butter_bridge",
+            body: "I find this existence challenging",
+            created_at: expect.any(String),
+            votes: 150,
+          })
+        );
+      });
+  });
+  test("200: responds with the decreased vote count", () => {
+    const requestBody = { inc_votes: -10 };
+    return request(app)
+      .patch("/api/articles/1")
+      .send(requestBody)
+      .expect(200)
+      .then(({ body: { article } }) => {
+        expect(article.votes).toBe(90);
+      });
+  });
+});
