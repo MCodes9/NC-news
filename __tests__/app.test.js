@@ -28,7 +28,7 @@ describe("GET /api/topics", () => {
 });
 
 describe("GET /api/articles/:article_id", () => {
-  test("200: Responds with the article matching the input article id passed as a parameter", () => {
+  test("200: Responds with the article matching the input article id", () => {
     return request(app)
       .get("/api/articles/1")
       .expect(200)
@@ -42,6 +42,18 @@ describe("GET /api/articles/:article_id", () => {
             body: "I find this existence challenging",
             created_at: expect.any(String),
             votes: 100,
+          })
+        );
+      });
+  });
+  test("200: Responds with the comment count for the article matching the input article id", () => {
+    return request(app)
+      .get("/api/articles/1")
+      .expect(200)
+      .then(({ body: { article } }) => {
+        expect(article).toEqual(
+          expect.objectContaining({
+            comment_count: expect.any(Number),
           })
         );
       });
