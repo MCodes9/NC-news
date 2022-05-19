@@ -92,7 +92,17 @@ describe("PATCH /api/articles/:article_id", () => {
       .send(requestBody)
       .expect(200)
       .then(({ body: { article } }) => {
-        expect(article.votes).toBe(90);
+        expect(article).toEqual(
+          expect.objectContaining({
+            article_id: 1,
+            title: "Living in the shadow of a great man",
+            topic: "mitch",
+            author: "butter_bridge",
+            body: "I find this existence challenging",
+            created_at: expect.any(String),
+            votes: 90,
+          })
+        );
       });
   });
   test("400: Responds a bad request error message when passed an invalid endpoint id", () => {
@@ -133,6 +143,24 @@ describe("PATCH /api/articles/:article_id", () => {
       .expect(404)
       .then(({ body }) => {
         expect(body).toEqual({ msg: "Article not found" });
+      });
+  });
+});
+
+describe("GET /api/users", () => {
+  test("200: Responds with an array of users", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body: { users } }) => {
+        expect(users).toHaveLength(4);
+        users.forEach((user) => {
+          expect(user).toEqual(
+            expect.objectContaining({
+              username: expect.any(String),
+            })
+          );
+        });
       });
   });
 });
