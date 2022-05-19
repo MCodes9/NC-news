@@ -6,6 +6,7 @@ const {
   getArticleById,
   patchArticleById,
 } = require("../NC-news/controllers/articles.controller");
+const { getUsers } = require("./controllers/users.controller");
 
 const {
   handlePathErrors,
@@ -19,6 +20,8 @@ app.use(express.json());
 app.get("/api/topics", getTopics);
 app.get("/api/articles/:article_id", getArticleById);
 app.patch("/api/articles/:article_id", patchArticleById);
+
+app.get("/api/users", getUsers);
 
 // ERROR HANDLING:
 app.all("/*", handlePathErrors);
