@@ -1,7 +1,7 @@
 const db = require("../db/connection.js");
 
 exports.fetchArticleById = (article_id) => {
-  let queryStr =
+  const queryStr =
     " SELECT articles.*, COUNT(comments.article_id)::INT AS comment_count FROM articles LEFT JOIN comments ON articles.article_id=comments.article_id WHERE articles.article_id = $1 GROUP BY articles.article_id;";
 
   return db.query(queryStr, [article_id]).then((article) => {
@@ -34,7 +34,7 @@ exports.updateArticleById = (article_id, increase_votes) => {
 };
 
 exports.fetchAllArticles = () => {
-  let queryStr =
+  const queryStr =
     "SELECT articles.author, articles.title, articles.article_id, articles.topic, articles.created_at, articles.votes, COUNT(comments.comment_id):: INT AS comment_count FROM articles LEFT JOIN comments ON articles.article_id=comments.article_id GROUP BY articles.article_id ORDER BY created_at DESC;";
   return db.query(queryStr).then((articles) => {
     return articles.rows;
