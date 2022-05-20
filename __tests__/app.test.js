@@ -35,7 +35,6 @@ describe("GET /api/articles", () => {
       .then(({ body: { articles } }) => {
         expect(articles).toBeSortedBy("created_at", { descending: true });
         expect(articles).toBeInstanceOf(Array);
-        expect(articles.length).toBe(12);
         articles.forEach((article) => {
           expect(article).toEqual(
             expect.objectContaining({
@@ -49,6 +48,21 @@ describe("GET /api/articles", () => {
               comment_count: expect.any(String),
             })
           );
+        });
+      });
+  });
+  test("200: Responds with the correct comment count for all articles", () => {
+    const articlesIdArray = [3, 6, 2, 12, 5, 1, 9, 10, 4, 8, 11, 7];
+    const commentCountArray = [2, 1, 0, 0, 2, 11, 2, 0, 0, 0, 0, 0];
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        console.log(articles);
+        expect(articles).toHaveLength(12);
+        articles.forEach((article, i) => {
+          expect(article.article_id).toBe(articlesIdArray[i]);
+          expect(parseInt(article.comment_count)).toBe(commentCountArray[i]);
         });
       });
   });
