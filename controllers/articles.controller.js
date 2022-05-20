@@ -24,10 +24,8 @@ exports.patchArticleById = (req, res, next) => {
 };
 
 exports.getAllArticles = (req, res, next) => {
-  console.log("line 27 in controller");
   fetchAllArticles()
     .then((articles) => {
-      console.log("line 30 in controller");
       res.status(200).send({ articles });
     })
     .catch(next);
