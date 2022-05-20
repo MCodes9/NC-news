@@ -27,6 +27,60 @@ describe("GET /api/topics", () => {
   });
 });
 
+describe("GET /api/articles", () => {
+  test("200: Responds with an array of articles", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toHaveLength(12);
+        articles.forEach((article) => {
+          expect(article).toEqual(
+            expect.objectContaining({
+              author: expect.any(String),
+              title: expect.any(String),
+              article_id: expect.any(Number),
+              topic: expect.any(String),
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+              comment_count: expect.any(Number),
+            })
+          );
+        });
+      });
+  });
+  test("200: Responds with the correct comment count for all articles", () => {
+    const articlesIdArray = [3, 6, 2, 12, 5, 1, 9, 10, 4, 8, 11, 7];
+    const commentCountArray = [2, 1, 0, 0, 2, 11, 2, 0, 0, 0, 0, 0];
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toHaveLength(12);
+        articles.forEach((article, i) => {
+          expect(article.article_id).toBe(articlesIdArray[i]);
+          expect(parseInt(article.comment_count)).toBe(commentCountArray[i]);
+        });
+      });
+  });
+  test("200: Responds with the array of articles sorted by descending date order", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toBeSortedBy("created_at", { descending: true });
+      });
+  });
+  test("404: Responds with a 'Not Found' message when the article id does not exist on database", () => {
+    return request(app)
+      .get("/api/darticles")
+      .expect(404)
+      .then((response) => {
+        response.body = { msg: "Article not found" };
+      });
+  });
+});
+
 describe("GET /api/articles/:article_id", () => {
   test("200: Responds with the article matching the input article id", () => {
     return request(app)
@@ -58,7 +112,7 @@ describe("GET /api/articles/:article_id", () => {
         );
       });
   });
-  test("400: Responds a bad request error message when passed an invalid endpoint id", () => {
+  test("400: Responds with a bad request error message when passed an invalid endpoint id", () => {
     return request(app)
       .get("/api/articles/invalid_id")
       .expect(400)
@@ -66,7 +120,7 @@ describe("GET /api/articles/:article_id", () => {
         expect(body.msg).toBe("Bad request");
       });
   });
-  test("404: Responds a 'Not Found' message when the article id does not exist on database", () => {
+  test("404: Responds with a 'Not Found' message when the article id does not exist on database", () => {
     return request(app)
       .get("/api/articles/999999999")
       .expect(404)
