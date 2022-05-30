@@ -181,7 +181,7 @@ describe("PATCH /api/articles/:article_id", () => {
         expect(body.msg).toBe("Bad request");
       });
   });
-  test("400: Responds a bad request error message when votes are not an integer", () => {
+  test("400: Responds with a bad request error message when votes are not an integer", () => {
     const requestBody = { inc_votes: "Minus 10" };
     return request(app)
       .patch("/api/articles/1")
@@ -191,7 +191,7 @@ describe("PATCH /api/articles/:article_id", () => {
         expect(body.msg).toBe("Bad request");
       });
   });
-  test("400: Responds a bad request error message when request body is empty", () => {
+  test("400: Responds with a bad request error message when request body is empty", () => {
     const requestBody = {};
     return request(app)
       .patch("/api/articles/invalid_id")
@@ -201,7 +201,7 @@ describe("PATCH /api/articles/:article_id", () => {
         expect(body.msg).toBe("Bad request");
       });
   });
-  test("404: Responds a 'Not Found' message when the article id does not exist on database", () => {
+  test("404: Responds with a 'Not Found' message when the article id does not exist on database", () => {
     const requestBody = { inc_votes: 50 };
     return request(app)
       .patch("/api/articles/999999999")
@@ -257,6 +257,92 @@ describe("GET /api/articles/:article_id/comments", () => {
         response.body = { msg: "Article not found" };
       });
   });
+});
+
+describe("POST /api/articles/:article_id/comments", () => {
+  test("Status: 201: Responds with a new posted comment", () => {
+    const newComment = {
+      username: "butter_bridge",
+      body: "Great insights",
+    };
+    return request(app)
+      .post(`/api/articles/2/comments`)
+      .send(newComment)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body.newAddedComment).toEqual(
+          expect.objectContaining({
+            comment_id: expect.any(Number),
+            body: "Great insights",
+            votes: expect.any(Number),
+            author: "butter_bridge",
+            created_at: expect.any(String),
+            article_id: 2,
+          })
+        );
+      });
+  });
+});
+test("400: Responds with a bad request error message when datatype of article id is invalid", () => {
+  const newComment = {
+    username: "butter_bridge",
+    body: "Great insights",
+  };
+  return request(app)
+    .post("/api/articles/second/comments")
+    .send(newComment)
+    .expect(400)
+    .then(({ body }) => {
+      expect(body).toEqual({ msg: "Bad request" });
+    });
+});
+test("400: Responds with bad request error message when datatype of request body properties are invalid", () => {
+  const invalidInputComment = {
+    username: 1,
+    body: true,
+  };
+  return request(app)
+    .post("/api/articles/2/comments")
+    .send(invalidInputComment)
+    .expect(400)
+    .then(({ body }) => {
+      expect(body).toEqual({ msg: "Bad request" });
+    });
+});
+test("400: Responds with a bad request error message when comment is missing a username or body (request body is empty) ", () => {
+  return request(app)
+    .post("/api/articles/2/comments")
+    .send({})
+    .expect(400)
+    .then(({ body: { msg } }) => {
+      expect(msg).toBe("Missing required field");
+    });
+});
+test("404: Responds with a 'Not Found' message when the article id does not exist on the database", () => {
+  const newComment = {
+    username: "butter_bridge",
+    body: "Great insights",
+  };
+  return request(app)
+    .post("/api/articles/9999/comments")
+    .send(newComment)
+    .expect(404)
+    .then(({ body: { msg } }) => {
+      expect(msg).toBe("Article not found");
+    });
+});
+test("404: Responds with a 'Not Found' message when the username does not exist on the database", () => {
+  const newComment = {
+    username: "bridge_butter",
+    body: "Great insights",
+  };
+  return request(app)
+    .post("/api/articles/2/comments")
+    .send(newComment)
+    .expect(404)
+    .then(({ body: { msg } }) => {
+      expect(msg).toBe("Username not found");
+    });
 });
 
 describe("GET /api/users", () => {
