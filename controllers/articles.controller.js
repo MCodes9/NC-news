@@ -2,6 +2,7 @@ const {
   fetchArticleById,
   updateArticleById,
   fetchAllArticles,
+  addComment,
 } = require("../models/articles.model.js");
 
 exports.getArticleById = (req, res, next) => {

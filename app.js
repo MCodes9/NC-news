@@ -7,8 +7,11 @@ const {
   patchArticleById,
   getAllArticles,
 } = require("../NC-news/controllers/articles.controller");
+const {
+  getComments,
+  postComment,
+} = require("./controllers/comments.controller");
 const { getUsers } = require("./controllers/users.controller");
-const { getComments } = require("./controllers/comments.controller");
 
 const {
   handlePathErrors,
@@ -23,6 +26,7 @@ app.get("/api/topics", getTopics);
 app.get("/api/articles", getAllArticles);
 app.get("/api/articles/:article_id", getArticleById);
 app.get("/api/articles/:article_id/comments", getComments);
+app.post("/api/articles/:article_id/comments", postComment);
 app.patch("/api/articles/:article_id", patchArticleById);
 
 app.get("/api/users", getUsers);
