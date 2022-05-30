@@ -31,18 +31,3 @@ exports.getAllArticles = (req, res, next) => {
     })
     .catch(next);
 };
-
-exports.postComment = (req, res, next) => {
-  const { article_id } = req.params;
-  const newComment = req.body;
-  const promises = [
-    fetchArticleById(article_id),
-    addComment(article_id, newComment),
-  ];
-
-  Promise.all(promises)
-    .then(([article_id, newAddedComment]) => {
-      res.status(201).send({ newAddedComment });
-    })
-    .catch(next);
-};
