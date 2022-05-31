@@ -387,3 +387,9 @@ describe("GET /api/users", () => {
       });
   });
 });
+
+describe("DELETE /api/comments", () => {
+  test("204: Deletes comment by comment_id", () => {
+    return request(app).delete(`/api/comments/2`).expect(204);
+  });
+});
