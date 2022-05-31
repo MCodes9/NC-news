@@ -392,4 +392,12 @@ describe("DELETE /api/comments", () => {
   test("204: Deletes comment by comment_id", () => {
     return request(app).delete(`/api/comments/2`).expect(204);
   });
+  test("404: Responds with not found error when comment_id does not exist in database", () => {
+    return request(app)
+      .delete(`/api/comments/9999`)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body).toEqual({ msg: "Non-existent comment cannot be deleted" });
+      });
+  });
 });
