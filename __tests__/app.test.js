@@ -4,6 +4,7 @@ const app = require("../app");
 const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data/index.js");
+const sorted = require("jest-sorted");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -71,14 +72,38 @@ describe("GET /api/articles", () => {
         expect(articles).toBeSortedBy("created_at", { descending: true });
       });
   });
-  test("404: Responds with a 'Not Found' message when the article id does not exist on database", () => {
+  test("200: Responds with an array of articles sorted by any valid sort column", () => {
     return request(app)
-      .get("/api/darticles")
-      .expect(404)
-      .then((response) => {
-        response.body = { msg: "Article not found" };
+      .get(`/api/articles?sort_by=comment_count`)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.articles).toBeSorted("comment_count", { descending: true });
       });
   });
+  test("200: Responds with the array of articles sorted by topic", () => {
+    return request(app)
+      .get("/api/articles?sort_by=topic&order=asc")
+      .expect(200)
+      .then(({ body: { articles } }) => {
+        expect(articles).toBeSortedBy("topic");
+      });
+  });
+  test("404: Responds with an error message when topic does not exist", () => {
+    return request(app)
+      .get("/api/articles?topic=some_other_topic")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Topic not found");
+      });
+  });
+  // test.only("404: Responds with a 'Not Found' message when the article id does not exist on database", () => {
+  //   return request(app)
+  //     .get("/api/articles")
+  //     .expect(404)
+  //     .then((response) => {
+  //       response.body = { msg: "Article not found" };
+  //     });
+  // });
 });
 
 describe("GET /api/articles/:article_id", () => {

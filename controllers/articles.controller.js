@@ -4,6 +4,7 @@ const {
   fetchAllArticles,
   addComment,
 } = require("../models/articles.model.js");
+const { fetchTopics } = require("../models/topics.model.js");
 
 exports.getArticleById = (req, res, next) => {
   const { article_id } = req.params;
@@ -25,7 +26,13 @@ exports.patchArticleById = (req, res, next) => {
 };
 
 exports.getAllArticles = (req, res, next) => {
-  fetchAllArticles()
+  const { sort_by, order, topic } = req.query;
+  fetchTopics()
+    .then((topics) => {
+      const mappedTopics = topics.map((topic) => topic.slug);
+      console.log(mappedTopics);
+      return fetchAllArticles(mappedTopics, sort_by, order, topic);
+    })
     .then((articles) => {
       res.status(200).send({ articles });
     })
