@@ -5,7 +5,7 @@
 
   "GET /api/topics": {
     "description": "serves an array of all topics",
-    "queries": ["slug","description"],
+    "queries": ["slug", "description"],
     "exampleResponse": {
       "topics": [{ "slug": "football", "description": "Footie!" }]
     }
@@ -74,9 +74,9 @@
     }
   },
 
-  "GET /api/articles:article_id/comments":{
+  "GET /api/articles:article_id/comments": {
     "description": "serves an array of all comments associated with a single article",
-    "queries": ["author","article_id","votes"],
+    "queries": ["author", "article_id", "votes"],
     "exampleResponse": {
       "articles": [
         {
@@ -88,7 +88,6 @@
         }
       ]
     }
-  }
   },
 
   "POST /api/articles/:article_id/comments": {
