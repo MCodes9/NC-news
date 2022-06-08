@@ -2,13 +2,29 @@
   "GET /api": {
     "description": "serves up a json representation of all the available endpoints of the api"
   },
+
   "GET /api/topics": {
     "description": "serves an array of all topics",
-    "queries": [],
+    "queries": ["slug","description"],
     "exampleResponse": {
       "topics": [{ "slug": "football", "description": "Footie!" }]
     }
   },
+
+  "GET /api/users": {
+    "description": "serves an array of all users",
+    "queries": ["username", "name", "avatar_url"],
+    "exampleResponse": {
+      "topics": [
+        {
+          "username": "rogersop",
+          "name": "paul",
+          "avatar_url": "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4"
+        }
+      ]
+    }
+  },
+
   "GET /api/articles": {
     "description": "serves an array of all topics",
     "queries": ["author", "topic", "sort_by", "order"],
@@ -23,5 +39,76 @@
         }
       ]
     }
+  },
+
+  "GET /api/articles/:article_id": {
+    "description": "serves an array of a single article by id",
+    "queries": ["article_id"],
+    "exampleResponse": {
+      "articles": [
+        {
+          "title": "UNCOVERED: catspiracy to bring down democracy",
+          "topic": "cats",
+          "author": "rogersop",
+          "body": "Bastet walks amongst us, and the cats are taking arms!",
+          "created_at": 1596464040000,
+          "votes": 0
+        }
+      ]
+    }
+  },
+
+  "PATCH /api/articles": {
+    "description": "accepts an object inc_vote with an increase or decrease in vote count ",
+    "exampleResponse": {
+      "articles": [
+        {
+          "title": "UNCOVERED: catspiracy to bring down democracy",
+          "topic": "cats",
+          "author": "rogersop",
+          "body": "Bastet walks amongst us, and the cats are taking arms!",
+          "created_at": 1596464040000,
+          "votes": 1
+        }
+      ]
+    }
+  },
+
+  "GET /api/articles:article_id/comments":{
+    "description": "serves an array of all comments associated with a single article",
+    "queries": ["author","article_id","votes"],
+    "exampleResponse": {
+      "articles": [
+        {
+          "body": "Lobster pot",
+          "votes": 0,
+          "author": "icellusedkars",
+          "article_id": 1,
+          "created_at": 1589577540000
+        }
+      ]
+    }
+  }
+  }
+
+  "POST /api/articles/:article_id/comments": {
+    "description": "serves an array of comments",
+    "queries": ["username", "body"],
+    "exampleResponse": {
+      "comments": [
+        {
+          "comment_id": 2,
+          "body": "Great insights",
+          "votes": 4,
+          "author": "butter_bridge",
+          "created_at": 1586179020000,
+          "article_id": 2
+        }
+      ]
+    }
+  },
+  "DELETE /api/comments": {
+    "description": "deletes the comment",
+    "queries": ["comment_id"]
   }
 }
