@@ -40,7 +40,6 @@ exports.fetchAllArticles = (
   order = "DESC",
   topic
 ) => {
-  console.log(mappedTopics);
   const validSortBys = [
     "article_id",
     "title",

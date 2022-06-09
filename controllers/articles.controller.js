@@ -30,7 +30,6 @@ exports.getAllArticles = (req, res, next) => {
   fetchTopics()
     .then((topics) => {
       const mappedTopics = topics.map((topic) => topic.slug);
-      console.log(mappedTopics);
       return fetchAllArticles(mappedTopics, sort_by, order, topic);
     })
     .then((articles) => {
