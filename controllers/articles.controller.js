@@ -2,7 +2,6 @@ const {
   fetchArticleById,
   updateArticleById,
   fetchAllArticles,
-  addComment,
 } = require("../models/articles.model.js");
 const { fetchTopics } = require("../models/topics.model.js");
 

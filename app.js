@@ -6,7 +6,7 @@ const {
   getArticleById,
   patchArticleById,
   getAllArticles,
-} = require("../NC-news/controllers/articles.controller");
+} = require("./controllers/articles.controller");
 const {
   getComments,
   postComment,
