@@ -5,6 +5,7 @@ const db = require("../db/connection");
 const seed = require("../db/seeds/seed");
 const testData = require("../db/data/test-data/index.js");
 const sorted = require("jest-sorted");
+const endpoints = require("../endpoints.json");
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -398,6 +399,17 @@ describe("DELETE /api/comments", () => {
       .expect(404)
       .then(({ body }) => {
         expect(body).toEqual({ msg: "Non-existent comment cannot be deleted" });
+      });
+  });
+});
+
+describe("GET /api", () => {
+  test("status: 200 - responds with all JSON endpoints", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toEqual(endpoints);
       });
   });
 });

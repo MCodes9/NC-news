@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 
 const { getTopics } = require("./controllers/topics.controller");
 const {
@@ -13,6 +14,7 @@ const {
   deleteCommentById,
 } = require("./controllers/comments.controller");
 const { getUsers } = require("./controllers/users.controller");
+const { getEndpoints } = require("./controllers/endpoints-controller");
 
 const {
   handlePathErrors,
@@ -21,8 +23,11 @@ const {
   handlePSQLErrors,
 } = require("./controllers/errors.controller");
 
+app.use(cors());
+
 app.use(express.json());
 
+app.get("/api", getEndpoints);
 app.get("/api/topics", getTopics);
 app.get("/api/articles", getAllArticles);
 app.get("/api/articles/:article_id", getArticleById);
