@@ -1,28 +1,15 @@
 const format = require("pg-format");
-const articles = require("./db/data/test-data/articles");
+const db = require("./db/connection");
 
-// in utils.js
-const checkExists = (table, column, value) => {
+exports.checkExists = async (table, column, value, message) => {
+  console.log("run");
   // %I is an identifier in pg-format
   const queryStr = format("SELECT * FROM %I WHERE %I = $1;", table, column);
-  return db.query(queryStr, [value]).then((rows) => {
-    if (rows.length === 0) {
-      return Promise.reject({ status: 404, msg: "Resource not found" });
-    }
-    return articles.rows;
-  });
-};
+  const dbOutput = await db.query(queryStr, [value]);
 
-// exports.checkTopicExists = (topic) => {
-//   const queryStr = ` SELECT * FROM topics WHERE slug = $1`;
-//   if (!topic) {
-//     return true;
-//   }
-//   return db.query(queryStr, [topic]).then(({ rows }) => {
-//     if (!rows.length) {
-//       return Promise.reject({ status: 404, msg: "Topic not found" });
-//     } else {
-//       return true;
-//     }
-//   });
-// };
+  if (dbOutput.rows.length === 0) {
+    // resource does NOT exist
+    return Promise.reject({ status: 404, msg: message });
+  }
+  return true;
+};

@@ -89,6 +89,16 @@ describe("GET /api/articles", () => {
         expect(articles).toBeSortedBy("topic");
       });
   });
+  describe("GET /api/articles?topic=query", () => {
+    test(" 200: Responds with an array of article objects filtered by topic", () => {
+      return request(app)
+        .get("/api/articles?topic=cats")
+        .expect(200)
+        .then(({ body: { articles } }) => {
+          expect(articles).toHaveLength(1);
+        });
+    });
+  });
   test("404: Responds with an error message when topic does not exist", () => {
     return request(app)
       .get("/api/articles?topic=some_other_topic")

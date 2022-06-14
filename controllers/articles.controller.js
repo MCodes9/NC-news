@@ -3,7 +3,8 @@ const {
   updateArticleById,
   fetchAllArticles,
 } = require("../models/articles.model.js");
-const { fetchTopics } = require("../models/topics.model.js");
+
+const { checkExists } = require("../utils");
 
 exports.getArticleById = (req, res, next) => {
   const { article_id } = req.params;
@@ -26,12 +27,15 @@ exports.patchArticleById = (req, res, next) => {
 
 exports.getAllArticles = (req, res, next) => {
   const { sort_by, order, topic } = req.query;
-  fetchTopics()
-    .then((topics) => {
-      const mappedTopics = topics.map((topic) => topic.slug);
-      return fetchAllArticles(mappedTopics, sort_by, order, topic);
-    })
-    .then((articles) => {
+  const promiseAllArr = [fetchAllArticles(sort_by, order, topic)];
+
+  if (topic) {
+    promiseAllArr.push(checkExists("topics", "slug", topic, "Topic not found"));
+  }
+  console.log(promiseAllArr);
+  Promise.all(promiseAllArr)
+    .then(([articles]) => {
+      console.log(articles);
       res.status(200).send({ articles });
     })
     .catch(next);
