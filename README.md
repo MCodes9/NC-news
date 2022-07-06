@@ -63,7 +63,7 @@ $ npm run setup-dbs
 $ npm run seed 
 ```
 
-##Testing:
+###Testing:
 I have used the `jest` framework to test whether the application runs as it is designed to run.
 
 
