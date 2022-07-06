@@ -6,7 +6,7 @@ I have built an API for the purpose of accessing application data programmatical
 
 Available endpoints listed below and can be found in the endpoints.json file and by following the link to the hosted version.
 
-###REST APIs:
+***REST APIs:***
 - GET /api/topics
 - GET /api/articles
 - GET /api/articles/:article_id
@@ -21,11 +21,11 @@ https://mm-be-nc-news.herokuapp.com/api/articles
 
 ## Set-up instructions:
 
-###Installation requirements:
+***Installation requirements:***
 - Node.js: v17.8.0 or later
 - PostgreSQL: v12.10 or later
 
-###Cloning the repository:
+***Cloning the repository:***
 Please follow the instructions below to clone the repository: 
 ```
 $ mkdir <new-directory-name>
