@@ -29,11 +29,7 @@ https://mm-be-nc-news.herokuapp.com/api/articles
 Please follow the instructions below to clone the repository: 
 ```
 $ mkdir <new-directory-name>
-
-```
 $ cd <new-directory-name>
-
-```
 $ git clone https://github.com/MCodes9/NC-news.git
 ```
 
