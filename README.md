@@ -34,10 +34,10 @@ $ git clone https://github.com/MCodes9/NC-news.git
 ```
 
 ### Dependencies: 
-To install app and developer dependancies, please run the following command in the terminal: 
+To install app and developer dependencies, please run the following command in the terminal: 
 ```
 $ npm install
-
+```
 ### Setup and seeding: 
 
 **Dev & Test environments:**
